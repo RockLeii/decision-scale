@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decision Scale — Make your choices visible.</title>
+<meta name="description" content="Turn complicated choices into a clear, weighted decision.">
+<style>
+:root{--ink:#26241f;--muted:#777269;--line:#e5dfd5;--paper:#faf9f6;--card:#fff;--soft:#f3efe8;--blue:#386b9f;--orange:#b45b2c;--gold:#a77c20}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.container{width:min(1060px,calc(100% - 32px));margin:auto}.serif{font-family:Georgia,"Times New Roman",serif}.muted,.small{color:var(--muted)}.small{font-size:12px}
+.header{height:72px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:-.02em}.brand span{font-weight:400;color:var(--muted)}
+.hero{text-align:center;padding:72px 0 55px}.hero h1{font-size:clamp(44px,7vw,78px);line-height:.98;letter-spacing:-.055em;margin:0 0 22px}.hero p{max-width:650px;margin:0 auto 30px;color:var(--muted);font-size:18px;line-height:1.65}.primary{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:14px 19px;font-weight:750}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:10px 14px;font-weight:650}
+.pill{display:inline-block;background:var(--soft);border-radius:99px;padding:7px 11px;font-size:12px;font-weight:750}.preview{max-width:880px;margin:42px auto 0;background:#fff;border:1px solid var(--line);border-radius:22px;padding:23px;box-shadow:0 12px 35px rgba(40,35,25,.055);text-align:left}.preview-head{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding-bottom:17px}.preview-result{display:grid;grid-template-columns:1fr 1fr;gap:20px;text-align:center;padding:30px 8% 10px}.preview-score{font-size:42px;font-weight:850}.bar{height:11px;background:#eee9e1;border-radius:99px;overflow:hidden;display:flex;margin-top:12px}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:25px 0 80px}.feature{border-top:1px solid var(--line);padding:20px 0}.feature h3{font-size:16px;margin:0 0 7px}.feature p{font-size:14px;line-height:1.6;color:var(--muted);margin:0}
+.app{display:none;padding:32px 0 70px}.app-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}.app-head h2{margin:2px 0 6px;font-size:34px;letter-spacing:-.045em}.actions{display:flex;gap:8px;flex-wrap:wrap}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:21px;margin-bottom:16px}.title{font-weight:800}.desc{font-size:13px;color:var(--muted);margin-top:4px}.field{width:100%;background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 11px;outline:0}.field:focus{border-color:#aaa;box-shadow:0 0 0 3px rgba(167,124,32,.1)}.options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}.label{display:block;font-size:11px;color:var(--muted);font-weight:750;margin-bottom:6px;letter-spacing:.04em}
+.metric{border-top:1px dashed var(--line);padding:19px 0}.metric:first-child{border-top:0;padding-top:2px}.metric-head{display:grid;grid-template-columns:minmax(0,1fr) 100px 35px;gap:10px;align-items:end}.delete{height:38px;width:35px;border:1px solid var(--line);background:#fff;border-radius:8px}.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:17px}.range{display:grid;grid-template-columns:1fr 50px;align-items:center;gap:10px}input[type=range]{width:100%;accent-color:var(--gold)}.range-value{text-align:right;font-size:13px;font-weight:750}.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:13px}.meta select{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 9px;font-size:12px}
+.results{display:grid;grid-template-columns:1.12fr .88fr;gap:16px}.result-card{min-height:100%}.scale{padding:34px 5% 18px}.beam{height:7px;background:#777168;border-radius:10px;transform-origin:center;position:relative;transition:transform .25s ease}.beam:after{content:"";position:absolute;left:50%;top:6px;transform:translateX(-50%);width:0;height:0;border-left:25px solid transparent;border-right:25px solid transparent;border-top:39px solid #e4ded4}.result-options{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:42px;text-align:center}.result-name{font-weight:800}.big{font-size:46px;font-weight:900;letter-spacing:-.045em}.drivers{margin-top:17px}.driver{padding:13px 0;border-bottom:1px solid var(--line)}.driver:last-child{border-bottom:0}.driver-top{display:flex;justify-content:space-between;gap:12px;font-size:13px}.driver-bar{height:7px;background:#eee9e1;border-radius:99px;overflow:hidden;margin-top:7px}.driver-fill{height:100%}.insight{background:var(--soft);border-radius:12px;padding:13px 14px;margin-top:17px;font-size:13px;line-height:1.55}.whatif{padding:13px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.55}.whatif:last-child{border-bottom:0}
+footer{border-top:1px solid var(--line);padding:30px 0 45px;color:var(--muted);font-size:12px}.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:9px;padding:10px 14px;font-size:12px;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.features,.results{grid-template-columns:1fr}.options,.metric-grid,.preview-result{grid-template-columns:1fr}.app-head{flex-direction:column}.container{width:min(100% - 24px,1060px)}.metric-head{grid-template-columns:minmax(0,1fr) 90px 35px}}
+</style>
+</head>
+<body>
+<header class="container header">
+  <div class="brand">Decision Scale <span>— make your choices visible.</span></div>
+  <button class="secondary" id="topStart">Start a decision</button>
+</header>
+
+<main id="landing">
+<section class="container hero">
+  <div class="pill">A simple decision-making tool</div>
+  <h1 class="serif">Make your choices<br><em>visible.</em></h1>
+  <p>When a decision feels complicated, put the things that matter on a scale. Set your priorities, score your options, and see what is actually driving the result.</p>
+  <button class="primary" id="heroStart">Start a decision →</button>
+  <div class="preview">
+    <div class="preview-head"><div><strong>Should I take the new job?</strong><div class="small" style="margin-top:4px">4 criteria · 2 options</div></div><span class="pill">Example</span></div>
+    <div class="preview-result">
+      <div><div class="small">CURRENT JOB</div><div class="preview-score" style="color:var(--blue)">43%</div></div>
+      <div><div class="small">NEW JOB</div><div class="preview-score" style="color:var(--orange)">57%</div></div>
+    </div>
+    <div class="bar"><div style="width:43%;background:var(--blue)"></div><div style="width:57%;background:var(--orange)"></div></div>
+  </div>
+</section>
+<section class="container features">
+  <div class="feature"><h3>1. Define what matters</h3><p>You choose the criteria. Salary, location, risk, growth, comfort — anything relevant to your decision.</p></div>
+  <div class="feature"><h3>2. Make trade-offs explicit</h3><p>Give each criterion an importance and each option a score. The engine handles the arithmetic.</p></div>
+  <div class="feature"><h3>3. Understand the result</h3><p>See the balance, the biggest drivers, and what could change the outcome.</p></div>
+</section>
+</main>
+
+<section class="app" id="app">
+<div class="container">
+  <div class="app-head">
+    <div><div class="small">DECISION BUILDER</div><h2 class="serif">Build your scale.</h2><div class="muted">There is no “right” weight. The scale reflects your priorities.</div></div>
+    <div class="actions"><button class="secondary" id="reset">Reset</button><button class="secondary" id="share">Share</button></div>
+  </div>
+
+  <div class="card">
+    <div class="title">What are you deciding?</div><div class="desc">Name the decision and add the options you are considering.</div>
+    <input class="field" id="decisionName" value="Should I take the new job?" style="margin-top:15px">
+    <div class="options" id="options"></div>
+    <button class="secondary" id="addOption" style="margin-top:12px">+ Add option</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><div><div class="title">What matters?</div><div class="desc">Importance tells the scale how much each criterion matters to you.</div></div><button class="secondary" id="addMetric">+ Add criterion</button></div>
+    <div id="metrics" style="margin-top:18px"></div>
+  </div>
+
+  <div id="results"></div>
+</div>
+</section>
+
+<footer><div class="container">Decision Scale · Your priorities. Your scores. Your decision.</div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(()=> {
+const $=s=>document.querySelector(s), clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+let state={name:"Should I take the new job?",options:["Current job","New job"],metrics:[
+{name:"Compensation",weight:5,direction:"higher",scores:[6,8],confidence:5},
+{name:"Career growth",weight:4,direction:"higher",scores:[6,9],confidence:4},
+{name:"Work-life balance",weight:4,direction:"higher",scores:[8,6],confidence:4},
+{name:"Stability",weight:3,direction:"higher",scores:[8,7],confidence:4}
+]};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const encode=s=>btoa(unescape(encodeURIComponent(JSON.stringify(s)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const decode=s=>{try{return JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/")))))}catch(e){return null}};
+if(location.hash.startsWith("#d=")){const d=decode(location.hash.slice(3));if(d?.options?.length>=2&&d.metrics?.length)state=d}
+const score=(m,x)=>m.direction==="lower"?10-x:x;
+
+function renderOptions(){
+$("#options").innerHTML=state.options.map((o,i)=>`<div><label class="label">OPTION ${String.fromCharCode(65+i)}</label><input class="field opt" data-i="${i}" value="${esc(o)}"></div>`).join("");
+document.querySelectorAll(".opt").forEach(e=>e.oninput=()=>{state.options[+e.dataset.i]=e.value||`Option ${+e.dataset.i+1}`;renderMetrics();calculate()});
+}
+function renderMetrics(){
+$("#metrics").innerHTML=state.metrics.map((m,i)=>`<div class="metric">
+<div class="metric-head"><div><label class="label">CRITERION</label><input class="field mname" data-i="${i}" value="${esc(m.name)}"></div>
+<div><label class="label">IMPORTANCE</label><input class="field mweight" data-i="${i}" type="number" min="1" max="5" value="${m.weight}"></div>
+<button class="delete" data-del="${i}">×</button></div>
+<div class="metric-grid">${state.options.map((o,j)=>`<div><label class="label">${esc(o)}</label><div class="range"><input type="range" min="0" max="10" step="1" value="${m.scores[j]??5}" data-mi="${i}" data-oi="${j}"><div class="range-value" data-val="${i}-${j}">${m.scores[j]??5}/10</div></div></div>`).join("")}</div>
+<div class="meta"><span class="small">Direction</span><select class="dir" data-i="${i}"><option value="higher" ${m.direction==="higher"?"selected":""}>Higher is better</option><option value="lower" ${m.direction==="lower"?"selected":""}>Lower is better</option></select><span class="small">Confidence</span><select class="conf" data-i="${i}">${[1,2,3,4,5].map(x=>`<option value="${x}" ${m.confidence===x?"selected":""}>${x}/5</option>`).join("")}</select></div>
+</div>`).join("");
+document.querySelectorAll(".mname").forEach(e=>e.oninput=()=>{state.metrics[+e.dataset.i].name=e.value;calculate()});
+document.querySelectorAll(".mweight").forEach(e=>e.oninput=()=>{state.metrics[+e.dataset.i].weight=clamp(+e.value||1,1,5);e.value=state.metrics[+e.dataset.i].weight;calculate()});
+document.querySelectorAll(".dir").forEach(e=>e.onchange=()=>{state.metrics[+e.dataset.i].direction=e.value;calculate()});
+document.querySelectorAll(".conf").forEach(e=>e.onchange=()=>{state.metrics[+e.dataset.i].confidence=+e.value;calculate()});
+document.querySelectorAll("[data-del]").forEach(e=>e.onclick=()=>{state.metrics.splice(+e.dataset.del,1);renderMetrics();calculate()});
+document.querySelectorAll('input[type="range"]').forEach(e=>e.oninput=()=>{const m=state.metrics[+e.dataset.mi];m.scores[+e.dataset.oi]=+e.value;$(`[data-val="${e.dataset.mi}-${e.dataset.oi}"]`).textContent=e.value+"/10";calculate()});
+}
+function calculate(){
+const weighted=state.options.map((_,oi)=>state.metrics.reduce((s,m)=>s+m.weight*score(m,m.scores[oi]??0),0));
+const total=weighted.reduce((a,b)=>a+b,0)||1,pct=weighted.map(x=>x/total*100);
+const sorted=pct.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v),leader=sorted[0]?.i??0,gap=(sorted[0]?.v||0)-(sorted[1]?.v||0);
+const conf=state.metrics.length?state.metrics.reduce((s,m)=>s+m.confidence,0)/state.metrics.length:0;
+const drivers=state.metrics.map(m=>{const vals=state.options.map((_,i)=>m.weight*score(m,m.scores[i]??0));return{m,vals,spread:Math.max(...vals)-Math.min(...vals)}}).sort((a,b)=>b.spread-a.spread);
+let whatIf=[];
+state.metrics.forEach((m,mi)=>{
+[clamp(m.weight-1,1,5),clamp(m.weight+1,1,5)].forEach(w=>{if(w===m.weight)return;const a=state.options.map((_,oi)=>state.metrics.reduce((s,x,j)=>s+(j===mi?w:x.weight)*score(x,x.scores[oi]??0),0));const l=a.indexOf(Math.max(...a));if(l!==leader)whatIf.push(`Change <strong>${esc(m.name)}</strong> importance ${m.weight} → ${w}; <strong>${esc(state.options[l])}</strong> becomes the leader.`)});
+});
+state.options.forEach((o,oi)=>state.metrics.forEach((m,mi)=>[clamp(m.scores[oi]-1,0,10),clamp(m.scores[oi]+1,0,10)].forEach(sc=>{if(sc===m.scores[oi])return;const a=state.options.map((_,x)=>state.metrics.reduce((s,y,j)=>s+y.weight*score(y,j===mi&&x===oi?sc:y.scores[x]??0),0));const l=a.indexOf(Math.max(...a));if(l!==leader)whatIf.push(`Change <strong>${esc(o)}</strong>’s <strong>${esc(m.name)}</strong> score ${m.scores[oi]} → ${sc}; <strong>${esc(state.options[l])}</strong> becomes the leader.`)})));
+$("#results").innerHTML=`<div class="results">
+<div class="card result-card"><div class="title">Your decision</div><div class="desc">${esc(state.name)}</div>
+<div class="scale"><div class="beam" id="beam"></div><div class="result-options">${state.options.slice(0,4).map((o,i)=>`<div><div class="result-name" style="color:${i%2===0?"var(--blue)":"var(--orange)"}">${esc(o)}</div><div class="big" style="color:${i%2===0?"var(--blue)":"var(--orange)"}">${pct[i].toFixed(0)}%</div></div>`).join("")}</div>
+<div class="bar">${state.options.map((o,i)=>`<div style="width:${pct[i]}%;background:${i%2===0?"var(--blue)":"var(--orange)"}"></div>`).join("")}</div>
+<div class="insight"><strong>${esc(state.options[leader])}</strong> has the strongest weighted score by <strong>${gap.toFixed(0)} points</strong>. This is a reflection of your current inputs, not an objective answer.</div></div></div>
+<div class="card result-card"><div class="title">What is driving the result?</div><div class="desc">The criteria with the largest score differences have the most leverage.</div><div class="drivers">${drivers.slice(0,5).map(d=>{const wi=d.vals.indexOf(Math.max(...d.vals));return`<div class="driver"><div class="driver-top"><strong>${esc(d.m.name)}</strong><span>${d.spread.toFixed(0)} pts</span></div><div class="driver-bar"><div class="driver-fill" style="width:${clamp(d.spread/50*100,3,100)}%;background:${wi%2===0?"var(--blue)":"var(--orange)"}"></div></div><div class="small" style="margin-top:5px">${esc(state.options[wi])} has the stronger contribution here.</div></div>`}).join("")}</div><div class="insight"><strong>Input confidence: ${Math.round(conf/5*100)}%</strong><br><span class="small">Confidence describes how sure you are about your inputs. It does not alter the weighted result.</span></div></div>
+</div>
+<div class="card"><div class="title">What could change your mind?</div><div class="desc">Small one-step tests show where the current result is sensitive.</div>${whatIf.slice(0,5).map(x=>`<div class="whatif">${x}</div>`).join("")||`<div class="insight">No single one-step change in the tested range flips the current leader. The result is relatively stable within these assumptions.</div>`}</div>`;
+const beam=$("#beam");if(beam){const angle=state.options.length===2?clamp((pct[1]-pct[0])*.12,-7,7):0;beam.style.transform=`rotate(${angle}deg)`}
+}
+function app(){document.querySelector("#landing").style.display="none";$("#app").style.display="block";window.scrollTo({top:0,behavior:"smooth"});renderOptions();renderMetrics();calculate()}
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1700)}
+$("#heroStart").onclick=app;$("#topStart").onclick=app;
+$("#addOption").onclick=()=>{if(state.options.length>=4)return;state.options.push(`Option ${String.fromCharCode(65+state.options.length)}`);state.metrics.forEach(m=>m.scores.push(5));renderOptions();renderMetrics();calculate()};
+$("#addMetric").onclick=()=>{state.metrics.push({name:"New criterion",weight:3,direction:"higher",scores:state.options.map(()=>5),confidence:3});renderMetrics();calculate()};
+$("#reset").onclick=()=>{location.hash="";location.reload()};
+$("#share").onclick=()=>{location.hash="d="+encode(state);navigator.clipboard?.writeText(location.href).then(()=>toast("Share link copied")).catch(()=>toast("Share link ready in the address bar"))};
+$("#decisionName").oninput=e=>{state.name=e.target.value;calculate()};
+if(location.hash.startsWith("#d="))app();
+})();
+</script>
+</body>
+</html>
